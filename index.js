@@ -18,8 +18,8 @@ function createElement(elementName, className) {
   return element;
 }
 // Создание выпадающего списка
-async function searchList() {
-  if (input.value) {
+async function searchList(event) {
+  if (event.keyCode !== 32 && input.value !== '') {
     let add = await searchUsers(input.value);
     inputResultRemove();
     add.items.forEach((el) => {
@@ -34,7 +34,7 @@ async function searchList() {
         stars: el.stargazers_count,
       });
     });
-  } else {
+  } if (input.value === '') {
     inputResultRemove()
   }
 }
@@ -63,6 +63,10 @@ function resultLists() {
 }
 // Функция удаления элемента результата
 function resultListShift() {
+  resultListBlockDivider.removeEventListener("click", {
+    handleEvent: resultListShift,
+    blockDelete: resultListBlock,
+  });
   this.blockDelete.remove();
 }
 // Функция очистки выпадающего списока
