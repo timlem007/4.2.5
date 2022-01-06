@@ -42,14 +42,12 @@ async function searchList(event) {
 function resultLists() {
   const resultListBlock = createElement("li", "result-list-block");
   const resultListBlockText = createElement("span", "result-list-block-text");
-  const resultListBlockDivider = createElement(
-    "span",
-    "result-list-block-divider"
-  );
+  const resultListBlockDivider = createElement( "span", "result-list-block-divider");
   // Слушатель события при клике по выпадающему списку
   resultListBlockDivider.addEventListener("click", {
     handleEvent: resultListShift,
     blockDelete: resultListBlock,
+    el: resultListBlockDivider,
   });
 
   resultListBlockText.innerHTML = `Name: ${this.name}<br>Owner: ${this.full_name}<br>Stars: ${this.stars}`;
@@ -62,12 +60,12 @@ function resultLists() {
   resultListBlock.append(resultListBlockDivider);
 }
 // Функция удаления элемента результата
-function resultListShift() {
-  resultListBlockDivider.removeEventListener("click", {
-    handleEvent: resultListShift,
-    blockDelete: resultListBlock,
-  });
+function resultListShift(e) {
   this.blockDelete.remove();
+  this.el.removeEventListener("click", {
+    handleEvent: resultListShift,
+    blockDelete: this.blockDelete,
+  });
 }
 // Функция очистки выпадающего списока
 function inputResultRemove() {
