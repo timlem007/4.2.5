@@ -19,6 +19,7 @@ function createElement(elementName, className) {
 }
 // Создание выпадающего списка
 async function searchList(event) {
+  
   if (event.keyCode !== 32 && input.value !== '') {
     let add = await searchUsers(input.value);
     inputResultRemove();
@@ -26,7 +27,7 @@ async function searchList(event) {
       const inputList = createElement("li", "input-list");
       inputList.innerHTML = el.name;
       inputBlockList.append(inputList);
-      // let add = resultLists.bind(el)
+
       inputList.addEventListener("click", {
         handleEvent: resultLists,
         name: el.name,
@@ -70,7 +71,15 @@ function resultListShift(e) {
 // Функция очистки выпадающего списока
 function inputResultRemove() {
   const inputResult = document.querySelectorAll(".input-list");
-  inputResult.forEach((el) => el.remove());
+  inputResult.forEach((el) => {
+    el.removeEventListener("click", {
+      handleEvent: resultLists,
+      name: el.name,
+      full_name: el.full_name,
+      stars: el.stargazers_count,
+    });
+    el.remove()
+  });
 }
 // Запрос данных
 async function searchUsers(text) {
@@ -83,7 +92,7 @@ async function searchUsers(text) {
   });
 }
 // Слушатель события при вводе данных
-input.addEventListener("keyup", debounce(searchList, 1000));
+input.addEventListener("keyup", debounce(searchList, 500));
 // Задержка
 function debounce(fn, debounceTime) {
   let timeout;

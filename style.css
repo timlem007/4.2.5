@@ -57,7 +57,7 @@ body {
 }
 
 .result-list-block {
-  height: 101px;
+  /* height: 101px; */
   border: 1px solid #000000;
   background: #e27beb;
   font-size: 24px;
